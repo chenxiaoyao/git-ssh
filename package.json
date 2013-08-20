@@ -1,0 +1,29 @@
+{
+  "name": "git-ssh",
+  "version": "0.0.1",
+  "description": "Helper to manage SSH key for git.",
+  "main": "./lib/git-ssh.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "git-ssh": "./bin/git-ssh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chenxiaoyao/git-ssh.git"
+  },
+  "dependencies": {
+    "shelljs": "0.1.2",
+    "colors": "0.6.1"
+  },
+  "keywords": [
+    "git",
+    "ssh"
+  ],
+  "engines": {
+    "node": "*"
+  },
+  "author": "chenxy",
+  "license": "BSD"
+}

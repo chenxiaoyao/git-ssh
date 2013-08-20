@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+
+var tokens = process.argv.slice(2, process.argv.length),
+    sh = require('shelljs'),
+    os = require('os'),
+    path = require('path'),
+    fs = require('fs'),
+    colors = require('colors'),
+    git_ssh = require('../lib/git-ssh');
+
+if (process.argv.length <= 2) {
+  help();
+  console.log();
+  process.exit(0);
+}
+
+var commands = ['create', 'import', 'where', 'init', 'quit'],
+    cmd = tokens.shift(),
+    log = null;
+
+if(commands.indexOf(cmd) === -1) {
+    log = 'Command "' + cmd + '" is not found!';
+    console.log(log.red);
+    console.log();
+    help();
+    process.exit(1);
+}
+
+if(cmd === 'init') {
+    git_ssh[cmd].call(null, function() {
+        if(os.platform().indexOf('win') === 0) {
+            sh.exec('start cmd /k cd /d ' + sh.pwd(), {async: true});
+            setTimeout(function() { 
+                console.log("Please use git tools in new cmd console!" );
+                process.exit(0); }, 1000);
+        } else {
+            // maybe not useful
+            sh.exec('export SSH_AUTH_SOCK=' +  process.env.SSH_AUTH_SOCK);
+        }
+    });
+} else {
+    git_ssh[cmd].apply(null, tokens);
+}
+
+function help() {
+    var content = fs.readFileSync(path.join(__dirname, '..', 'doc', 'help.txt'), 'utf-8');
+    console.log(content);
+}
